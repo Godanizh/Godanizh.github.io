@@ -1,7 +1,7 @@
 # FixIt 站点配置
-# 上线前把 YOURUSERNAME 全部替换成你的 GitHub 用户名（或直接跑 .\setup.ps1 -Username xxx）
+# 上线前把 Godanizh 全部替换成你的 GitHub 用户名（或直接跑 .\setup.ps1 -Username xxx）
 # 主题参数完整说明：https://fixit.lruihao.cn/zh-cn/docs/getting-started/configuration/
-baseURL = "https://YOURUSERNAME.github.io/"
+baseURL = "https://godanizh.github.io/"
 title = "我的博客"
 theme = "FixIt"
 defaultContentLanguage = "zh-cn"
@@ -42,7 +42,7 @@ capitalizeListTitles = false
 
   [params.author]
     name = "XXX"
-    link = "https://github.com/YOURUSERNAME"
+    link = "https://github.com/Godanizh"
     email = ""
     avatar = ""
 
@@ -73,7 +73,7 @@ capitalizeListTitles = false
   # 社交图标：键名即图标名，weight 控制排序
   [params.social]
     [params.social.github]
-      id = "YOURUSERNAME"
+      id = "Godanizh"
       weight = 1
     # [params.social.rss]
     #   id = "index.xml"
@@ -88,7 +88,7 @@ capitalizeListTitles = false
     enable = false
     [params.comment.giscus]
       enable = false
-      repo = "YOURUSERNAME/YOURUSERNAME.github.io"
+      repo = "Godanizh/Godanizh.github.io"
       repo_id = ""
       category = "Announcements"
       category_id = ""

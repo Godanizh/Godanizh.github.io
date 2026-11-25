@@ -19,7 +19,7 @@ comments: false
 
 ## 联系方式
 
-- GitHub：<https://github.com/YOURUSERNAME>
+- GitHub：<https://github.com/Godanizh>
 - 邮箱：you@example.com
 
 > 这一页是 `content/about.md`，直接编辑这个文件即可。
