@@ -98,6 +98,10 @@ capitalizeListTitles = false
       reactions_enabled = "1"
       emit_metadata = "0"
 
+  # Cookie 同意横幅：关掉，纯静态博客没有需要同意的追踪
+  [params.cookieconsent]
+    enable = false
+
 [[menu.main]]
   name = "文章"
   url = "/posts/"
