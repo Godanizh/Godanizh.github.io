@@ -6,7 +6,6 @@ param(
 $root = $PSScriptRoot
 $files = @(
     (Join-Path $root 'hugo.toml'),
-    (Join-Path $root 'layouts\partials\comments.html'),
     (Join-Path $root 'content\about.md')
 )
 
@@ -26,5 +25,6 @@ foreach ($f in $files) {
 if ($total -eq 0) {
     "没有找到 YOURUSERNAME 占位符，可能已经替换过了。"
 } else {
-    "完成。共替换 $total 处，现在可以运行 hugo server -D"
+    "完成。共替换 $total 处。"
+    "接下来：.\serve.ps1 本地预览；确认无误后 git push 上线。"
 }
