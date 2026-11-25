@@ -1,0 +1,79 @@
+# 站点主配置。上线前只需把下面的 YOURUSERNAME 换成你的 GitHub 用户名。
+baseURL = "https://YOURUSERNAME.github.io/"
+locale = "zh-CN"
+defaultContentLanguage = "zh"
+title = "我的博客"
+theme = "PaperMod"
+hasCJKLanguage = true
+enableRobotsTXT = true
+
+[pagination]
+  pagerSize = 10
+
+# 生成 sitemap / RSS / 搜索索引
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+[params]
+  author = "你的名字"
+  description = "个人博客"
+  defaultTheme = "auto"
+  ShowReadingTime = true
+  ShowCodeCopyButtons = true
+  ShowToc = true
+  TocOpen = false
+  ShowBreadCrumbs = true
+  ShowPostNavLinks = true
+  ShowShareButtons = false
+  comments = true
+
+  # 首页简介卡片
+  [params.homeInfoParams]
+    Title = "你好，我是 XXX"
+    Content = "这里写一句话简介，说明你关注的领域和这个博客要记录什么。"
+
+  # 社交图标
+  [[params.socialIcons]]
+    name = "github"
+    url = "https://github.com/YOURUSERNAME"
+
+  # 首页搜索相关
+  [params.fuseOpts]
+    isCaseSensitive = false
+    shouldSort = true
+    location = 0
+    distance = 1000
+    threshold = 0.4
+    minMatchCharLength = 0
+    limit = 10
+    keys = ["title", "permalink", "summary", "content"]
+
+[menu]
+  [[menu.main]]
+    name = "文章"
+    pageRef = "posts"
+    weight = 10
+  [[menu.main]]
+    name = "标签"
+    pageRef = "tags"
+    weight = 20
+  [[menu.main]]
+    name = "搜索"
+    url = "search/"
+    weight = 30
+  [[menu.main]]
+    name = "关于"
+    pageRef = "about"
+    weight = 40
+
+[markup]
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = true
+    lineNos = false
+    noClasses = true
+  [markup.goldmark.renderer]
+    unsafe = true
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3
