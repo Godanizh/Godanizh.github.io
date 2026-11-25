@@ -2,7 +2,7 @@
 # 上线前把 Godanizh 全部替换成你的 GitHub 用户名（或直接跑 .\setup.ps1 -Username xxx）
 # 主题参数完整说明：https://fixit.lruihao.cn/zh-cn/docs/getting-started/configuration/
 baseURL = "https://godanizh.github.io/"
-title = "我的博客"
+title = "godanizh的网络安全博客"
 theme = "FixIt"
 defaultContentLanguage = "zh-cn"
 locale = "zh-CN"
