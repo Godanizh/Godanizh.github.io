@@ -103,21 +103,26 @@ capitalizeListTitles = false
     enable = false
 
 [[menu.main]]
-  name = "文章"
-  url = "/posts/"
+  name = "CTF"
+  url = "/ctf/"
   weight = 1
+
+[[menu.main]]
+  name = "电子取证"
+  url = "/forensics/"
+  weight = 2
 
 [[menu.main]]
   name = "标签"
   url = "/tags/"
-  weight = 2
+  weight = 3
 
 [[menu.main]]
   name = "搜索"
   url = "/search/"
-  weight = 3
+  weight = 4
 
 [[menu.main]]
   name = "关于"
   url = "/about/"
-  weight = 4
+  weight = 5
