@@ -1,117 +1,91 @@
-# 个人博客（Hugo + FixIt + GitHub Pages）
+# godanizh 的网络安全博客
 
-纯静态、零成本、自带 HTTPS。仓库名必须是 `你的用户名.github.io`，上线地址即 `https://你的用户名.github.io`。
+基于 [Fuwari](https://github.com/saicaca/fuwari)（Astro + Svelte + Tailwind）的个人博客，托管在 GitHub Pages。
 
-主题：[FixIt](https://github.com/hugo-fixit/FixIt) v1（已裁剪后内置在 `themes/FixIt`，不是 submodule，不需要 `--recurse-submodules`）。
+- 线上地址：https://godanizh.github.io
+- 主题许可：MIT（见 `LICENSE`）
+- 构建产物是纯静态文件，`dist/` 直接可托管
 
-## 目录结构
-
-```
-个人博客/
-├─ hugo.toml                     站点配置（用户名、导航、评论都在这里）
-├─ content/posts/                文章（Markdown）
-├─ content/about.md              关于页
-├─ themes/FixIt/                 主题（内置，已删掉主题自带的文档内容）
-├─ .github/workflows/deploy.yml  推送后自动构建发布
-├─ serve.ps1                     本地预览（自动带上 Hugo 和 Dart Sass）
-├─ setup.ps1                     一键替换 YOURUSERNAME
-└─ .tools/                       本地用的 hugo.exe / dart-sass（已 gitignore，不入库）
-```
-
-## 第一次上手（3 步）
-
-### 1. 填用户名
+## 常用命令
 
 ```powershell
-cd "E:\GIthub 个人博客"
-.\setup.ps1 -Username 你的GitHub用户名
+pnpm install        # 首次或依赖变更后
+pnpm dev            # 开发模式，http://localhost:4321
+pnpm build          # 构建到 dist/（同时生成 Pagefind 搜索索引）
+pnpm preview        # 预览构建结果
+pnpm new-post 标题   # 新建文章，自动生成 front matter
 ```
 
-### 2. 本地预览
+> 本机现在用 `pnpm`（不是 npm）。`package.json` 里锁了 `pnpm@9.14.4`，`preinstall` 会拒绝 npm/yarn。
 
-```powershell
-.\serve.ps1
-```
+## 改配置（都在一个文件里）
 
-打开 http://localhost:1313 ，`Ctrl+C` 停止。改文件会自动刷新。
+`src/config.ts`：
 
-### 3. 推到 GitHub
+| 想改什么 | 改哪个字段 |
+|---|---|
+| 站点标题/副标题/语言 | `siteConfig.title`、`subtitle`、`lang` |
+| 背景大图 | `siteConfig.banner`（`enable`、`src`、`position`） |
+| 全站主色 | `siteConfig.themeColor.hue`（0–360） |
+| 访客能否自己调色 | `themeColor.fixed`（`false` = 显示调色盘） |
+| 头像/昵称/简介/社交 | `profileConfig` |
+| 顶部导航 | `navBarConfig.links` |
+| 文章许可协议 | `licenseConfig` |
 
-先在 GitHub 网页新建**公开**空仓库（不要勾 README/.gitignore/license），名为 `你的用户名.github.io`，然后：
+**图片放哪**：`src/assets/images/`（配置里写 `assets/images/xxx.png`）或 `public/`（写 `/xxx.png`）。
 
-```powershell
-git add .
-git commit -m "init blog"
-git branch -M main
-git remote add origin https://github.com/你的用户名/你的用户名.github.io.git
-git push -u origin main
-```
+更细的样式：`src/styles/main.css`、`src/styles/variables.styl`、`tailwind.config.cjs`。
 
-推完去仓库 **Settings → Pages → Source** 选 **GitHub Actions**，再回 **Actions** 看构建（约 1–2 分钟）。
-⚠️ 第一次必须先在 Settings 里选 GitHub Actions，否则报 `Get Pages site failed`。
+## 写文章
 
-## 日常写作
-
-```powershell
-hugo new content posts/新文章.md    # 或用 .tools\hugo\hugo.exe new content ...
-```
-
-把 front matter 里的 `draft: true` 改成 `false`，写完：
-
-```powershell
-git add . ; git commit -m "post: 新文章" ; git push
-```
-
-front matter 常用字段：
+文章放在 `src/content/posts/`，front matter 字段（由 `src/content/config.ts` 的 schema 校验）：
 
 ```yaml
 ---
 title: "标题"
-date: 2026-11-25
+published: 2026-11-26        # 必填
+updated: 2026-11-27          # 可选
 draft: false
-tags: ["随笔"]
-categories: ["技术"]
-summary: "列表页显示的摘要"
+description: "列表页摘要"
+image: ""                    # 封面图，留空则纯色卡片
+tags: ["电子取证", "手机取证"]
+category: "电子取证"
+lang: ""
 ---
 ```
 
-## 可选：开启 giscus 评论
+- **图片**：放进 `public/images/...`，正文里写 `![](/images/.../x.png)`，构建时原样拷贝
+- **代码块**：Expressive Code，支持行号、折叠、文件名
+- **数学公式**：`$...$` / `$$...$$`（KaTeX）
 
-1. 仓库 Settings → General → Features 勾选 **Discussions**
-2. 打开 https://giscus.app/zh-CN ，填仓库名、选 Discussion 分类，复制 `data-repo-id` 和 `data-category-id`
-3. 编辑 `hugo.toml` 的 `[params.comment]` 段：
+## 从语雀导入
 
-```toml
-[params.comment]
-  enable = true
-  [params.comment.giscus]
-    enable = true
-    repo = "你的用户名/你的用户名.github.io"
-    repo_id = "上一步复制的 repo_id"
-    category = "Announcements"
-    category_id = "上一步复制的 category_id"
+语雀导出的 Markdown 直接放进来，需要做两件事：
+
+1. 补 front matter（上面那套字段）
+2. 把 `cdn.nlark.com` 的外链图片下载到 `public/images/`，正文改成 `/images/...`
+
+原来的 `tools/import-yuque.ps1` 是为 Hugo 写的，迁移后已移除；需要的话按上面的规则手工处理，或让我重新写一个 Astro 版。
+
+## 部署
+
+推送到 `main` 即自动上线：
+
+```
+push → GitHub Actions（pnpm install + pnpm build）→ 上传 dist/ → GitHub Pages
 ```
 
-## 可选：绑定自己的域名
+工作流文件：`.github/workflows/deploy.yml`
 
-1. DNS 添加 `CNAME` 记录指向 `你的用户名.github.io`
-2. 新建 `static/CNAME`，内容只写一行域名，如 `blog.example.com`
-3. `hugo.toml` 的 `baseURL` 改成 `https://blog.example.com/`
-4. 仓库 Settings → Pages → Custom domain 填域名，勾选 **Enforce HTTPS**
+首次部署前必须在仓库 **Settings → Pages → Source** 选择 **GitHub Actions**。
 
-## 常见问题
+## 已知限制
 
-| 现象 | 原因与处理 |
+| 事项 | 说明 |
 |---|---|
-| 构建报 `TOCSS-DART ... need to install Dart Sass` | FixIt 用 SCSS，Hugo 0.157+ 不再内置 libsass。线上由 workflow 自动装；本地用 `serve.ps1` 会带上 `.tools/dart-sass` |
-| 本地 `hugo server` 反复重建、CPU 跑满 | 缓存目录被放进了项目内。`serve.ps1` 已把 `HUGO_CACHEDIR` 指到 `%LOCALAPPDATA%\hugo-blog-cache` |
-| 本地预览看不到评论区 | 正常，Hugo 开发环境会关闭评论/PWA/统计，只有生产构建才启用 |
-| 页面没样式、纯文本 | `baseURL` 还是 `YOURUSERNAME`，跑 `.\setup.ps1` |
-| Actions 报 `Get Pages site failed` | 没在 Settings → Pages 里把 Source 选成 GitHub Actions |
-| `github.io` 国内访问不稳 | 是线路问题，不是配置问题；介意就绑自有域名 |
-
-## 注意
-
-- 主题是内置的，不是 submodule，替换主题只需换 `themes/` 目录 + 改 `hugo.toml` 的 `theme`
-- 图片压成 WebP 再传，仓库控制在 1GB 内
-- 无法备案，别指望国内 CDN
+| 分类/标签没有独立列表页 | Fuwari 只生成 `categories/index.xml`、`tags/index.xml`（RSS），**没有 HTML 归档页**。想按「CTF / 电子取证」分栏浏览，需要自己加页面 |
+| 评论 | 未接入。要加需自己写 giscus 组件（Fuwari 不内置） |
+| 代码块配色 | 只支持深色主题，浅色模式下代码块仍是深底 |
+| 搜索 | Pagefind，**只在 `pnpm build` 之后可用**，`pnpm dev` 下搜索无结果 |
+| 中文分词 | Pagefind 对 zh-cn 不支持词干化，只能整词匹配 |
+| 图片体积 | `public/images/yuque/` 目前 4.4MB（17 张 PNG），建议后续压成 WebP |
